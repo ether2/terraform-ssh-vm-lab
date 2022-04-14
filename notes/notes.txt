@@ -1,0 +1,23 @@
+#https://docs.microsoft.com/en-us/azure/developer/terraform/create-linux-virtual-machine-with-infrastructure
+
+Ran into an issue after spinning up resources via Terraform using the template/boilerplate from the Microsoft Documentation.
+
+Wasn't able to connect to my virtual machine using the key generated in Terraform, even after applying permissions etc.
+I'm not going to lose sleep over it because I don't need Terraform to manage these keys.
+
+So instead, create the keys ahead of time:
+
+ssh-keygen -b 4096
+
+then, set permissions:
+
+chmod 400 ~/.ssh/*
+
+terraform apply --auto-update
+ssh -i ~/.ssh/id_rsa azureuser@<ip address>
+
+admin_ssh_key {
+    username   = "azureuser"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
+
